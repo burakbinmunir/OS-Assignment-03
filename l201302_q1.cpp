@@ -94,7 +94,7 @@ int main (int argc, char* argv[]){
 	pthread_t id;
 	pthread_create(&id , NULL, &findMin,&array);
 	pthread_join(id, (void**) &ptr);
-	cout << "Minium is : " << minimum << endl;
+	cout << "Minimum is : " << minimum << endl;
 	
 	pthread_create(&id, NULL, &findMax, &array);
 	pthread_join(id, (void**) &ptr);
