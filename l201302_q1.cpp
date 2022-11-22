@@ -29,6 +29,7 @@ void printArray(struct ArrInfo array){
 	for (int index =0; index < array.size; cout << array.arr[index] << " " , index++);
 }
 
+
 void* findMin (void* arr){
 	struct ArrInfo* array = (ArrInfo*) arr;
 	
@@ -89,19 +90,23 @@ int main (int argc, char* argv[]){
 	int arrSize = argc - 1;
 	
 	struct ArrInfo array = extractArr(arrSize, argv);	
-	struct ArrInfo* ptr;
+	struct ArrInfo* res1;
 	
-	pthread_t id;
-	pthread_create(&id , NULL, &findMin,&array);
-	pthread_join(id, (void**) &ptr);
+	pthread_t id1;
+	pthread_create(&id1 , NULL, &findMin,&array);
+	pthread_join(id1, (void**) &res1);
 	cout << "Minimum is : " << minimum << endl;
 	
-	pthread_create(&id, NULL, &findMax, &array);
-	pthread_join(id, (void**) &ptr);
+	pthread_t id2;
+	struct ArrInfo* res2;
+	pthread_create(&id2, NULL, &findMax, &array);
+	pthread_join(id2, (void**) &res2);
 	cout << "Maximum is: " << maximum << endl;
 	
-	pthread_create(&id, NULL, &finAvg, &array);
-	pthread_join(id, (void**) &ptr);
+	pthread_t id3;
+	struct ArrInfo* res3;
+	pthread_create(&id3, NULL, &finAvg, &array);
+	pthread_join(id3, (void**) &res3);
 	cout << "Average is: " << average << endl;
 	
 	return 0;	
