@@ -19,39 +19,59 @@ bool isPrime(int number)
       return true;
 }
 
-PrimeArr findPrimeNumber(int number){
-	struct PrimeArr primeNum;
-	primeNum.size = 0;
+void* findPrimeNumber(void* num){
+	int number = *(int*) num;
+
+	struct PrimeArr* primeNum = new PrimeArr;
+	primeNum->size = 0;
 	for(int index = 1; index <= number; index++)
       	{
 
           if(isPrime(index)) 
           {
-		primeNum.size++;
+		primeNum->size++;
           }
     	}
     	
-    	primeNum.primeNumbers = new int [primeNum.size];
+    	primeNum->primeNumbers = new int [primeNum->size];
     	
     	int count = 0;
     	for (int index =1; index <= number; index++) {
     		if (isPrime(index)){
-    			primeNum.primeNumbers[count] = index;
+    			primeNum->primeNumbers[count] = index;
     			count++;
     		}
     	}
     	
-    	return primeNum;
+    	pthread_exit( (void*) primeNum);
+	
 	 
 }	
 
-void printPrimeNum(PrimeArr primeNum){
-	for (int index = 0; index < primeNum.size;cout << primeNum.primeNumbers[index] << " ", index++);
+void printPrimeNum(PrimeArr* primeNum){
+	for (int index = 0; index < primeNum->size; cout << primeNum-> primeNumbers[index] << " ", index++);
 }
+
 int main (int argc, char* argv[] ){
 
+	if (argc <= 1 )
+	{
+		cout << "Zero command line argument" << endl;
+	}	
+	
+
 	int number = atoi (argv[1]);
-	PrimeArr primeNum = findPrimeNumber(number);
-	printPrimeNum(primeNum);
+	
+	pthread_t id;
+	
+	int num = 33;
+	pthread_create (&id, NULL, &findPrimeNumber, &num);
+	
+	PrimeArr* primeArr;
+	
+	pthread_join  (id, (void**) &primeArr);
+	cout << "Hello " << endl;
+	printPrimeNum(primeArr);
+	
 	return 0;
 }	
